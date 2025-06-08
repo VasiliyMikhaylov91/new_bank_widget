@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "new-bank-vidget"
+version = "0.1.0"
+description = ""
+authors = ["chelchik91 <chelchik91@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+poetry-core = "^2.1.3"
+
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.2.0"
+mypy = "^1.16.0"
+black = "^25.1.0"
+isort = "^6.0.1"
+
+[tool.mypy]
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+exclude = 'venv'
+
+[tool.black]
+# Максимальная длина строки
+line-length = 119
+# Файлы, которые не нужно форматировать
+exclude = '''
+(
+  /(
+      \.git          # в корне проекта
+  )/
+  | foo.py           # Также отдельно исключить файл с именем foo.py
+                     # в корне проекта
+)
+'''
+
+[tool.isort]
+# максимальная длина строки
+line_length = 119
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
