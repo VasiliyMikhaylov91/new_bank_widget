@@ -29,7 +29,7 @@ def get_mask_account(account_number: Union[int, str]) -> str:
     HIDDEN_DIGITS = 2
 
     str_account_number = str(account_number)
-    result = '*' * HIDDEN_DIGITS + str_account_number[(len(str_account_number) - LAST_UNMASK_DIGITS_NUMBER):]
+    result = "*" * HIDDEN_DIGITS + str_account_number[(len(str_account_number) - LAST_UNMASK_DIGITS_NUMBER):]
     return result
 
 
