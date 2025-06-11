@@ -7,7 +7,7 @@
 1. Установите PyCharm c официального сайта JETBRAINS [Ссылка на сайт](https://www.jetbrains.com/pycharm/.)
 2. Установите менеджер пакетов Poetry [Ссылка тут]( https://python-poetry.org/)
 3. В PyCharm склонируйте репозиторий с ссылкой https://github.com/VasiliyMikhaylov91/new_bank_widget.git
-4. Установите интерпрbтатор Python Poetry
+4. Установите интерпретатор Python Poetry
 5. Установите необходимые зависимости описанные в файле pyproject.toml
 
 ## Описание функций
