@@ -44,7 +44,9 @@ from src.processing import filter_by_state, sort_by_date
         ),
     ],
 )
-def test_filter_by_state(operations, state, result):
+def test_filter_by_state(operations: list[dict], state: str, result: list[dict]) -> None:
+    """Тестирование функции filter_by_state"""
+
     assert filter_by_state(operations, state) == result
 
 
@@ -111,5 +113,7 @@ def test_filter_by_state(operations, state, result):
         ),
     ],
 )
-def test_sort_by_date(operation, reverse, result):
+def test_sort_by_date(operation: list[dict], reverse: bool, result: list[dict]) -> None:
+    """Тестирование функции sort_by_date"""
+
     assert sort_by_date(operation, reverse) == result

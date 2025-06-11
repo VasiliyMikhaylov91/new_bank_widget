@@ -11,7 +11,7 @@ from src.widget import get_date, mask_account_card
         ("wfegsg", None),
     ],
 )
-def test_mask_account_card(type_account_card_number, result):
+def test_mask_account_card(type_account_card_number: str, result: str) -> None:
     assert mask_account_card(type_account_card_number) == result
 
 
@@ -24,5 +24,5 @@ def test_mask_account_card(type_account_card_number, result):
         ("2024.03.11 02:26:18.671407", "Введите дату и время в формате 2024-03-11T02:26:18.671407"),
     ],
 )
-def test_get_date(date_time, date):
+def test_get_date(date_time: str, date: str) -> None:
     assert get_date(date_time) == date

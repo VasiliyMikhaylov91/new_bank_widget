@@ -2,7 +2,9 @@ import pytest
 
 
 @pytest.fixture
-def card_numbers():
+def card_numbers() -> list[tuple]:
+    """Фикстура для теста функции get_mask_card_number"""
+
     return [
         (7000792289606361, "7000 79** **** 6361"),
         ("92289", "**89"),
@@ -12,7 +14,9 @@ def card_numbers():
 
 
 @pytest.fixture
-def account_numbers():
+def account_numbers() -> list[tuple]:
+    """Фикстура для теста функции get_mask_account"""
+
     return [
         (73654108430135874305, "**4305"),
         ("73654108430135874305654221", "**4221"),
