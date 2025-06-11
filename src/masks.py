@@ -12,8 +12,11 @@ def get_mask_card_number(card_number: Union[int, str]) -> str:
         raise ValueError
 
     str_card_number = str(card_number)
+    number_length = len(str_card_number)
+    if number_length < 13:
+        return '**' + str_card_number[-2:]
     result = []
-    for i in range(len(str_card_number)):
+    for i in range(number_length):
         if not i % SPACE_PLACE_NUMBER and i:
             result.append(" ")
 
