@@ -8,9 +8,15 @@ def get_mask_card_number(card_number: Union[int, str]) -> str:
     LAST_UNMASK_DIGITS_NUMBER = 4
     SPACE_PLACE_NUMBER = 4
 
+    if not card_number:
+        raise ValueError
+
     str_card_number = str(card_number)
+    number_length = len(str_card_number)
+    if number_length < 13:
+        return '**' + str_card_number[-2:]
     result = []
-    for i in range(len(str_card_number)):
+    for i in range(number_length):
         if not i % SPACE_PLACE_NUMBER and i:
             result.append(" ")
 
@@ -27,8 +33,13 @@ def get_mask_account(account_number: Union[int, str]) -> str:
 
     LAST_UNMASK_DIGITS_NUMBER = 4
     HIDDEN_DIGITS = 2
+    MIN_DIGITS = 6
 
     str_account_number = str(account_number)
+
+    if len(str_account_number) < MIN_DIGITS:
+        raise ValueError
+
     result = "*" * HIDDEN_DIGITS + str_account_number[(len(str_account_number) - LAST_UNMASK_DIGITS_NUMBER):]
     return result
 
