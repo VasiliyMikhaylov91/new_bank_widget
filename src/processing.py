@@ -1,13 +1,14 @@
 def filter_by_state(operations: list[dict], state: str = 'executed') -> list[dict]:
     '''Функция выбирает из списка словарей operations только те, у которых параметр state соответствует заданому'''
 
-    return list(filter(lambda x: x['state'].lower() == state, operations))
+    return list(filter(lambda x: ('state' in x) and (x['state'].lower() == state), operations))
 
 
 def sort_by_date(operations: list[dict], reverse: bool = True) -> list[dict]:
-    '''Фунция сортирует операции из спика operations'''
+    '''Функция сортирует операции из списка operations'''
 
-    return sorted(operations, key=lambda x: x['date'], reverse=reverse)
+    clean_date_operations = list(i for i in operations if 'T' in i['date'] and '-' in i['date'])
+    return sorted(clean_date_operations, key=lambda x: x['date'], reverse=reverse)
 
 
 if __name__ == '__main__':
