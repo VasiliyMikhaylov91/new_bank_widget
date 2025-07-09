@@ -1,5 +1,6 @@
-import json
+import json, os
 
+from dotenv import load_dotenv
 import requests
 
 
@@ -15,6 +16,36 @@ def data_from_json(path_to_file: str = '../data/operations.json') -> list[dict]:
     if not data or type(data) != list:
         data = []
     return data
+
+
+def transaction_amount_rub(transaction: dict) -> float:
+    transaction_currency_code = transaction["operationAmount"]["currency"]["code"]
+    amount = transaction["operationAmount"][["amount"]]
+    if transaction_currency_code == "RUB":
+        return amount
+
+    load_dotenv()
+    api_key = os.getenv('API_KEY')
+    api_url = (f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&"
+           f"from={transaction_currency_code}&"
+           f"amount={amount}")
+
+    payload = {}
+    headers = {
+        "apikey": api_key
+    }
+
+    try:
+        response_api = requests.request("GET", api_url, headers=headers, data=payload)
+        result = json.dumps(response_api)["result"]
+    except Exception as e:
+        print(e)
+        result = None
+
+    if result:
+        return float(result)
+
+    return 0.0
 
 
 if __name__ == '__main__':
