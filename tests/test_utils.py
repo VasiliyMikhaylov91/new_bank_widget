@@ -1,4 +1,4 @@
-from typing import Callable, Any
+from typing import Any
 from unittest.mock import Mock, patch
 
 import pytest
@@ -7,10 +7,10 @@ import requests
 from src.utils import data_from_json, transaction_amount_rub
 
 
-@patch('builtins.open', create=True)
-def test_data_from_json(mock_open):
+@patch("builtins.open", create=True)
+def test_data_from_json(mock_open: Any) -> None:
     mock_file = mock_open.return_value.__enter__.return_value
-    mock_file.read.return_value = '''[
+    mock_file.read.return_value = """[
   {
     "id": 441945886,
     "state": "EXECUTED",
@@ -37,52 +37,38 @@ def test_data_from_json(mock_open):
         "code": "USD"
       }
     }
-  }]'''
+  }]"""
     assert data_from_json() == [
-  {
-    "id": 441945886,
-    "state": "EXECUTED",
-    "date": "2019-08-26T10:50:58.294041",
-    "operationAmount": {
-      "amount": "31957.58",
-      "currency": {
-        "name": "руб.",
-        "code": "RUB"
-      }
-    },
-    "description": "Перевод организации",
-    "from": "Maestro 1596837868705199",
-    "to": "Счет 64686473678894779589"
-  },
-  {
-    "id": 41428829,
-    "state": "EXECUTED",
-    "date": "2019-07-03T18:35:29.512364",
-    "operationAmount": {
-      "amount": "8221.37",
-      "currency": {
-        "name": "USD",
-        "code": "USD"
-      }
-    }
-  }]
-    mock_open.assert_called_once_with('../data/operations.json', 'r')
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount": {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589",
+        },
+        {
+            "id": 41428829,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount": {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
+        },
+    ]
+    mock_open.assert_called_once_with("../data/operations.json", "r")
+
 
 @pytest.mark.parametrize(
-  'transaction, response, result',
-  [(
-   {
-    "id": 41428829,
-    "state": "EXECUTED",
-    "date": "2019-07-03T18:35:29.512364",
-    "operationAmount": {
-      "amount": "8221.37",
-      "currency": {
-        "name": "USD",
-        "code": "USD"
-      }
-    }
-   }, '''
+    "transaction, response, result",
+    [
+        (
+            {
+                "id": 41428829,
+                "state": "EXECUTED",
+                "date": "2019-07-03T18:35:29.512364",
+                "operationAmount": {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
+            },
+            """
   {
     "date": "2019-07-03",
     "historical": true,
@@ -98,10 +84,12 @@ def test_data_from_json(mock_open):
     "result": 520543.416119,
     "success": true
   }
- ''', 520543.416119
-  )]
+ """,
+            520543.416119,
+        )
+    ],
 )
-def test_transaction_amount_rub(transaction: dict, response:str, result: float) -> None:
-  mock_request = Mock(return_value=response)
-  requests.request = mock_request
-  assert transaction_amount_rub(transaction) == result
+def test_transaction_amount_rub(transaction: dict, response: str, result: float) -> None:
+    mock_request = Mock(return_value=response)
+    requests.request = mock_request
+    assert transaction_amount_rub(transaction) == result
