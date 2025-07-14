@@ -3,24 +3,29 @@ import json, os
 from dotenv import load_dotenv
 import requests
 
+from src.decorators import log
 
+
+@log()
 def data_from_json(path_to_file: str = '../data/operations.json') -> list[dict]:
     """
     Преобразование файла в формате *.json в список словарей
     """
-    try:
-        with open(path_to_file) as f:
-            data = json.load(f)
-    except Exception:
-        data = None
-    if not data or type(data) != list:
-        data = []
+
+    with open(path_to_file, 'r') as f:
+        data = json.load(f)
+
     return data
 
 
+@log()
 def transaction_amount_rub(transaction: dict) -> float:
+    """
+    Из полученного словаря transaction возвращается сумма транзакции в рублях в float
+    """
+
     transaction_currency_code = transaction["operationAmount"]["currency"]["code"]
-    amount = transaction["operationAmount"][["amount"]]
+    amount = transaction["operationAmount"]["amount"]
     if transaction_currency_code == "RUB":
         return amount
 
@@ -28,24 +33,18 @@ def transaction_amount_rub(transaction: dict) -> float:
     api_key = os.getenv('API_KEY')
     api_url = (f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&"
            f"from={transaction_currency_code}&"
-           f"amount={amount}")
+           f"amount={amount}&"
+           f"date={transaction["date"].split('T')[0]}")
 
     payload = {}
     headers = {
         "apikey": api_key
     }
 
-    try:
-        response_api = requests.request("GET", api_url, headers=headers, data=payload)
-        result = json.dumps(response_api)["result"]
-    except Exception as e:
-        print(e)
-        result = None
+    response_api = requests.request("GET", api_url, headers=headers, data=payload)
+    result = json.loads(response_api)["result"]
 
-    if result:
-        return float(result)
-
-    return 0.0
+    return float(result)
 
 
 if __name__ == '__main__':
