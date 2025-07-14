@@ -7,16 +7,21 @@ from dotenv import load_dotenv
 from src.decorators import log
 
 
-@log()
 def data_from_json(path_to_file: str = "../data/operations.json") -> list[dict]:
     """
     Преобразование файла в формате *.json в список словарей
     """
 
-    with open(path_to_file, "r") as f:
-        data = list(json.load(f))
+    try:
+        with open(path_to_file, "r") as f:
+            data = json.load(f)
+    except Exception as e:
+        print(e)
+        data = None
 
-    return data
+    if not data or type(data) is not list:
+        data = []
+    return list(data)
 
 
 @log()
