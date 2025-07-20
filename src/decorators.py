@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any
+from typing import Any, Callable
 
 
 def log(filename: str = "") -> Any:
@@ -9,7 +9,7 @@ def log(filename: str = "") -> Any:
     При указании параметра filename записи будут вестись в указанный файл.
     """
 
-    def wrapper(function: Any) -> Any:
+    def wrapper(function: Callable[..., Any]) -> Callable[..., Any] or None:
         @wraps(function)
         def inner(*args: Any, **kwargs: Any) -> Any:
             result = f"{function.__name__} "

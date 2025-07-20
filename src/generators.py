@@ -1,7 +1,7 @@
 from typing import Generator, Union
 
 
-def filter_by_currency(transactions_list: list[dict], currency: str) -> Generator[Union[dict, None]]:
+def filter_by_currency(transactions_list: list[dict], currency: str) -> Generator[dict] or None:
     """Функция отсеивает все транзакции из списка transactions_list кроме тех operationAmount[code] == currency"""
 
     filter_transactions = list(
@@ -14,7 +14,7 @@ def filter_by_currency(transactions_list: list[dict], currency: str) -> Generato
             yield transaction
 
 
-def transaction_descriptions(transactions_list: list[dict]) -> Generator[Union[str, None]]:
+def transaction_descriptions(transactions_list: list[dict]) -> Generator[str] or None:
     """Генератор описания транзакций из списка transactions_list"""
 
     if not transactions_list:
