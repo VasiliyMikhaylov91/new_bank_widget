@@ -8,7 +8,7 @@ def filter_by_currency(transactions_list: list[dict], currency: str) -> Generato
         filter(lambda x: x["operationAmount"]["currency"]["code"] == currency, transactions_list)
     )
     if not filter_transactions:
-        yield None
+        yield dict()
     else:
         for transaction in filter_transactions:
             yield transaction
@@ -18,7 +18,7 @@ def transaction_descriptions(transactions_list: list[dict]) -> Generator[str, No
     """Генератор описания транзакций из списка transactions_list"""
 
     if not transactions_list:
-        yield None
+        yield ''
     else:
         for transaction in transactions_list:
             yield transaction["description"]
