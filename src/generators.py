@@ -1,7 +1,7 @@
 from typing import Generator
 
 
-def filter_by_currency(transactions_list: list[dict], currency: str) -> Generator[dict] or None:
+def filter_by_currency(transactions_list: list[dict], currency: str) -> Generator[dict, None, None]:
     """Функция отсеивает все транзакции из списка transactions_list кроме тех operationAmount[code] == currency"""
 
     filter_transactions = list(
@@ -14,7 +14,7 @@ def filter_by_currency(transactions_list: list[dict], currency: str) -> Generato
             yield transaction
 
 
-def transaction_descriptions(transactions_list: list[dict]) -> Generator[str] or None:
+def transaction_descriptions(transactions_list: list[dict]) -> Generator[str, None, None]:
     """Генератор описания транзакций из списка transactions_list"""
 
     if not transactions_list:
@@ -24,7 +24,7 @@ def transaction_descriptions(transactions_list: list[dict]) -> Generator[str] or
             yield transaction["description"]
 
 
-def card_number_generator(start_number: int, end_number: int) -> Generator[str]:
+def card_number_generator(start_number: int, end_number: int) -> Generator[str, None, None]:
     """Генератор номеров карт от start_number до end_number включительно"""
 
     MAX_LENGTH_CARD_NUMBER = 16
