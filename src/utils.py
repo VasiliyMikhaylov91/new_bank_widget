@@ -6,9 +6,12 @@ from dotenv import load_dotenv
 from requests import RequestException
 
 utils_logger = logging.getLogger(__name__)
-file_handler = logging.FileHandler('./logs/utils.log')
+with open('../logs/utils.log', 'w') as file:
+    file.write('')
+file_handler = logging.FileHandler('../logs/utils.log', encoding='utf-8')
 file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s')
 file_handler.setFormatter(file_formatter)
+file_handler.setLevel(logging.DEBUG)
 utils_logger.addHandler(file_handler)
 utils_logger.setLevel(logging.DEBUG)
 
