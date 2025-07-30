@@ -1,10 +1,16 @@
 import json
 import os
 
-import requests
+import logging, requests
 from dotenv import load_dotenv
+from requests import RequestException
 
-from src.decorators import log
+utils_logger = logging.getLogger(__name__)
+file_handler = logging.FileHandler('./logs/utils.log')
+file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s')
+file_handler.setFormatter(file_formatter)
+utils_logger.addHandler(file_handler)
+utils_logger.setLevel(logging.DEBUG)
 
 
 def data_from_json(path_to_file: str = "../data/operations.json") -> list[dict]:
@@ -15,8 +21,9 @@ def data_from_json(path_to_file: str = "../data/operations.json") -> list[dict]:
     try:
         with open(path_to_file, "r") as f:
             data = json.load(f)
+        utils_logger.debug('Успешное считывание файла')
     except Exception as e:
-        print(e)
+        utils_logger.error(e)
         data = None
 
     if not data or type(data) is not list:
@@ -24,19 +31,26 @@ def data_from_json(path_to_file: str = "../data/operations.json") -> list[dict]:
     return list(data)
 
 
-@log()
 def transaction_amount_rub(transaction: dict) -> float:
     """
     Из полученного словаря transaction возвращается сумма транзакции в рублях в float
     """
 
+    global api_key
     transaction_currency_code = transaction["operationAmount"]["currency"]["code"]
     amount = transaction["operationAmount"]["amount"]
     if transaction_currency_code == "RUB":
+        utils_logger.debug('Выведена сумма без конвертации')
         return float(amount)
 
     load_dotenv()
-    api_key = os.getenv("API_KEY")
+    try:
+        api_key = os.getenv("API_KEY")
+        utils_logger.debug('Успешно получен API_KEY из .env')
+    except Exception as e:
+        utils_logger.error(e)
+        return 0.0
+
     api_url = (
         f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&"
         f"from={transaction_currency_code}&"
@@ -46,7 +60,13 @@ def transaction_amount_rub(transaction: dict) -> float:
 
     headers = {"apikey": api_key}
 
-    response_api = str(requests.request("GET", api_url, headers=headers))
+    try:
+        response_api = str(requests.request("GET", api_url, headers=headers))
+        utils_logger.debug('Получен ответ API')
+    except RequestException as e:
+        utils_logger.error(e)
+        return 0.0
+
     result = json.loads(response_api)["result"]
 
     return float(result)
