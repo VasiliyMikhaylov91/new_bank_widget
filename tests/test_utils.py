@@ -1,4 +1,3 @@
-from typing import Any
 from unittest.mock import Mock, patch
 
 import pytest
@@ -8,7 +7,7 @@ from src.utils import data_from_json, transaction_amount_rub
 
 
 @patch("builtins.open", create=True)
-def test_data_from_json(mock_open: Any) -> None:
+def test_data_from_json(mock_open: Mock) -> None:
     mock_file = mock_open.return_value.__enter__.return_value
     mock_file.read.return_value = """[
   {
