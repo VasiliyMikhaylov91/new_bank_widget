@@ -1,4 +1,4 @@
-import csv, requests
+import csv
 
 import pandas as pd
 
@@ -6,10 +6,11 @@ import pandas as pd
 def read_csv_transactions(file_csv_path: str) -> list[dict]:
     """Преобразование указанного *.csv файла в список словарей"""
 
-    with open(file_csv_path, encoding='utf-8') as f:
-        reader = csv.DictReader(f, delimiter=';')
+    with open(file_csv_path, encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter=";")
     result = [row for row in reader]
     return result
+
 
 def read_xlsx_transactions(file_xlsx_path: str) -> list[dict]:
     """Преобразование указанного *.xlsx файла в список словарей"""
@@ -18,7 +19,7 @@ def read_xlsx_transactions(file_xlsx_path: str) -> list[dict]:
     return [dict(df.iloc[i]) for i in range(df.shape[0])]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # url = "https://github.com/skypro-008/transactions/raw/refs/heads/main/transactions.csv"
     # file_path = "../data/transactions.csv"
     #
@@ -42,4 +43,4 @@ if __name__ == '__main__':
     #     print("Downloading successful")
     # else:
     #     print("Something went wrong")
-    print(read_csv_transactions('../data/transactions.csv'))
+    print(read_csv_transactions("../data/transactions.csv"))
