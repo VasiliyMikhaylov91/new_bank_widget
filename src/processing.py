@@ -1,3 +1,8 @@
+from collections import Counter
+
+import re
+
+
 def filter_by_state(operations: list[dict], state: str = 'executed') -> list[dict]:
     '''Функция выбирает из списка словарей operations только те, у которых параметр state соответствует заданому'''
 
@@ -9,6 +14,16 @@ def sort_by_date(operations: list[dict], reverse: bool = True) -> list[dict]:
 
     clean_date_operations = list(i for i in operations if 'T' in i['date'] and '-' in i['date'])
     return sorted(clean_date_operations, key=lambda x: x['date'], reverse=reverse)
+
+
+def process_bank_search(data: list[dict], search: str) -> list[dict]:
+    pattern = re.compile(search)
+    result = [item for item in data if pattern.search(item["description"])]
+    return result
+
+def process_bank_operations(data: list[dict], categories: list) -> dict:
+    description_list = [item["description"] for item in data if item["description"] in categories]
+    return Counter(description_list)
 
 
 if __name__ == '__main__':
