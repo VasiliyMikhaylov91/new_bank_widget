@@ -4,24 +4,28 @@ import re
 
 
 def filter_by_state(operations: list[dict], state: str = 'executed') -> list[dict]:
-    '''Функция выбирает из списка словарей operations только те, у которых параметр state соответствует заданому'''
+    """Функция выбирает из списка словарей operations только те, у которых параметр state соответствует заданому"""
 
     return list(filter(lambda x: ('state' in x) and (x['state'].lower() == state), operations))
 
 
 def sort_by_date(operations: list[dict], reverse: bool = True) -> list[dict]:
-    '''Функция сортирует операции из списка operations'''
+    """Функция сортирует операции из списка operations"""
 
     clean_date_operations = list(i for i in operations if 'T' in i['date'] and '-' in i['date'])
     return sorted(clean_date_operations, key=lambda x: x['date'], reverse=reverse)
 
 
 def process_bank_search(data: list[dict], search: str) -> list[dict]:
-    pattern = re.compile(search)
-    result = [item for item in data if pattern.search(item["description"])]
+    """Функция возвращает список операций из data, описание которых содержит слово search"""
+
+    pattern = re.compile(search.lower())
+    result = [item for item in data if pattern.search(item["description"].lower())]
     return result
 
 def process_bank_operations(data: list[dict], categories: list) -> dict:
+    """Функция подсчитывает количество категорий из data которые имеются в categories"""
+
     description_list = [item["description"] for item in data if item["description"] in categories]
     return Counter(description_list)
 
