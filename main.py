@@ -21,6 +21,8 @@ settings_data = [
 
 
 def print_transaction(transaction: dict, json_transaction: bool = False) -> None:
+    """ Вывод транзакции в терминал """
+
     print(transaction["date"].split("T")[0], " ", transaction["description"])
     from_to_row = f"{mask_account_card(transaction["from"])} -> {mask_account_card(transaction["to"])}" \
         if "from" in transaction and transaction["from"] \
@@ -33,6 +35,8 @@ def print_transaction(transaction: dict, json_transaction: bool = False) -> None
 
 
 def get_answer(question: str, answer_variants: list[str]) -> bool:
+    """ Обработка ответа пользователя """
+
     is_answer = False
     result = False
     while not is_answer:
@@ -49,6 +53,8 @@ def get_answer(question: str, answer_variants: list[str]) -> bool:
 
 
 def state_filter(data_for_filter: list[dict]) -> list[dict]:
+    """ Отсеивание транзакций по выбранному статусу """
+
     answer_variants = ["executed", "canceled", "pending"]
     is_answer = False
     answer = ""
@@ -67,6 +73,8 @@ def state_filter(data_for_filter: list[dict]) -> list[dict]:
 
 
 def data_choice() -> (Union[list[dict], None], bool):
+    """ Выбор файла загрузки данных """
+
     cur_path = os.getcwd()
 
     print("""
