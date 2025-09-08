@@ -23,7 +23,7 @@ def get_date(date_and_time: str) -> str:
 
     date = date_and_time.split("T")[0].split("-")
     if len(date) != 3:
-        return 'Введите дату и время в формате 2024-03-11T02:26:18.671407'
+        return "Введите дату и время в формате 2024-03-11T02:26:18.671407"
     date.reverse()
     return ".".join(date)
 

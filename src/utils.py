@@ -7,9 +7,12 @@ from dotenv import load_dotenv
 from requests import RequestException
 
 utils_logger = logging.getLogger(__name__)
-with open("../logs/utils.log", "w") as file:
-    file.write("")
-file_handler = logging.FileHandler("../logs/utils.log", encoding="utf-8")
+# with open(os.path.join(path, "./logs/utils.log"), "w") as file:
+#     file.write("")
+if __name__ == "__main__":
+    file_handler = logging.FileHandler("../logs/utils.log", encoding="utf-8")
+else:
+    file_handler = logging.FileHandler("./logs/utils.log", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s")
 file_handler.setFormatter(file_formatter)
 file_handler.setLevel(logging.DEBUG)
@@ -23,7 +26,7 @@ def data_from_json(path_to_file: str = "../data/operations.json") -> list[dict]:
     """
 
     try:
-        with open(path_to_file, "r") as f:
+        with open(path_to_file, "r", encoding="utf8") as f:
             data = json.load(f)
         utils_logger.debug("Успешное считывание файла")
     except Exception as e:
