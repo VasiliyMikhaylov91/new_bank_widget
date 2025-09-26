@@ -2,9 +2,12 @@ import logging
 from typing import Union
 
 masks_logger = logging.getLogger(__name__)
-with open("../logs/masks.log", "w") as file:
-    file.write("")
-file_handler = logging.FileHandler("../logs/masks.log", encoding="utf-8")
+# with open("../logs/masks.log", "w") as file:
+#     file.write("")
+if __name__ == "__main__":
+    file_handler = logging.FileHandler("../logs/masks.log", encoding="utf-8")
+else:
+    file_handler = logging.FileHandler("./logs/masks.log", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s")
 file_handler.setFormatter(file_formatter)
 file_handler.setLevel(logging.DEBUG)

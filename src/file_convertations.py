@@ -8,7 +8,7 @@ def read_csv_transactions(file_csv_path: str) -> list[dict]:
 
     with open(file_csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter=";")
-    result = [row for row in reader]
+        result = [row for row in reader]
     return result
 
 
@@ -16,6 +16,7 @@ def read_xlsx_transactions(file_xlsx_path: str) -> list[dict]:
     """Преобразование указанного *.xlsx файла в список словарей"""
 
     df = pd.read_excel(file_xlsx_path)
+    df = df.dropna(subset=["id", "state", "date", "amount", "currency_name", "currency_code", "from", "description"])
     return [dict(df.iloc[i]) for i in range(df.shape[0])]
 
 
